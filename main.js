@@ -71,6 +71,19 @@ const startAutoUpdater = squirrelUrl => {
     electron.dialog.showMessageBox({ message: 'Auto updater error: ' + error });
   });
 
+  electron.autoUpdater.addListener('download-progress', progressObj => {
+    let log_message = 'Download speed: ' + progressObj.bytesPerSecond;
+    log_message = log_message + ' - Downloaded ' + progressObj.percent + '%';
+    log_message =
+      log_message +
+      ' (' +
+      progressObj.transferred +
+      '/' +
+      progressObj.total +
+      ')';
+    sendStatusToWindow(log_message);
+  });
+
   // tell squirrel to check for updates
   electron.autoUpdater.checkForUpdates();
 };
