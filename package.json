@@ -1,13 +1,13 @@
 {
-  "name": "electron-helloworld",
-  "version": "0.0.0",
+  "name": "helloworld",
+  "version": "0.0.2",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
     "run-server": "http-server release/installer -p 8060",
-    "pack:win": "electron-packager . --platform=win32 --arch=x64 --out=release/package",
+    "pack:win": "electron-packager . helloworld --platform=win32 --arch=x64 --out=release/package --overwrite",
     "build:winstaller": "node ./build.js",
-    "zip:win": "bestzip release/installer/electron-helloworld-win.zip ./release/installer/Setup.exe",
+    "zip:win": "bestzip release/installer/helloworld-win.zip ./release/installer/Setup.exe",
     "build:win": "npm run pack:win && npm run build:winstaller"
   },
   "devDependencies": {
@@ -15,9 +15,10 @@
     "electron": "^6.0.6",
     "electron-packager": "^14.0.5",
     "electron-winstaller": "^4.0.0",
-    "http-server": "^0.11.1"
+    "http-server": "^0.9.0"
   },
   "dependencies": {
-    "electron-log": "^3.0.7"
+    "electron-log": "^3.0.7",
+    "electron-squirrel-startup": "^1.0.0"
   }
 }

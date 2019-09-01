@@ -1,12 +1,14 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow } = require('electron');
 const log = require('electron-log');
+
+if (require('electron-squirrel-startup')) return;
 
 if (handleSquirrelEvent()) {
   // squirrel event handled and app will exit in 1000ms, so don't do anything else
   return;
 }
 
-function handleSquirrelEvent () {
+function handleSquirrelEvent() {
   if (process.argv.length === 1) {
     return false;
   }
@@ -25,9 +27,8 @@ function handleSquirrelEvent () {
   }
 }
 
-
 let win;
-function createWindow () {
+function createWindow() {
   // Create the browser window.
   win = new BrowserWindow({
     width: 800,
@@ -35,55 +36,55 @@ function createWindow () {
     webPreferences: {
       nodeIntegration: true
     }
-  })
+  });
 
   // and load the index.html of the app.
-  win.loadFile('index.html')
+  win.loadFile('index.html');
 }
 
-app.on('ready', createWindow)
-
-
+app.on('ready', createWindow);
 
 const electron = require('electron');
-const squirrelUrl = "http://10.0.2.2:8060";
+const squirrelUrl = 'http://127.0.0.1:8060';
 
-const startAutoUpdater = (squirrelUrl) => {
+const startAutoUpdater = squirrelUrl => {
   sendStatusToWindow('startAutoUpdater');
 
   // The Squirrel application will watch the provided URL
-  electron.autoUpdater.setFeedURL(`${squirrelUrl}/win64/`);
+  electron.autoUpdater.setFeedURL(`${squirrelUrl}`);
 
   // Display a success message on successful update
-  electron.autoUpdater.addListener("update-downloaded", (event, releaseNotes, releaseName) => {
-    sendStatusToWindow(`The release ${releaseName} has been downloaded`);
-    electron.dialog.showMessageBox({"message": `The release ${releaseName} has been downloaded`});
-  });
+  electron.autoUpdater.addListener(
+    'update-downloaded',
+    (event, releaseNotes, releaseName) => {
+      sendStatusToWindow(`The release ${releaseName} has been downloaded`);
+      electron.dialog.showMessageBox({
+        message: `The release ${releaseName} has been downloaded`
+      });
+      electron.autoUpdater.quitAndInstall();
+    }
+  );
 
   // Display an error message on update error
-  electron.autoUpdater.addListener("error", (error) => {
-    sendStatusToWindow("Auto updater error: " + error);
-    electron.dialog.showMessageBox({"message": "Auto updater error: " + error});
+  electron.autoUpdater.addListener('error', error => {
+    sendStatusToWindow('Auto updater error: ' + error);
+    electron.dialog.showMessageBox({ message: 'Auto updater error: ' + error });
   });
 
   // tell squirrel to check for updates
   electron.autoUpdater.checkForUpdates();
-}
+};
 
-app.on('ready', function (){
+app.on('ready', function() {
   // Add this condition to avoid error when running your application locally
-    
+
   // if (process.env.NODE_ENV !== "dev") {
-    sendStatusToWindow('text');
-    // startAutoUpdater(squirrelUrl)
+  sendStatusToWindow('text');
+  startAutoUpdater(squirrelUrl);
   // };
 });
-
-
 
 function sendStatusToWindow(text) {
   log.info(text);
   win.webContents.send('message', text);
 }
-
-
