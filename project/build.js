@@ -1,8 +1,8 @@
 var electronInstaller = require('electron-winstaller');
 
 resultPromise = electronInstaller.createWindowsInstaller({
-  appDirectory: './release/package/helloworld-win32-x64',
-  outputDirectory: './release/installer',
+  appDirectory: '../release/package/helloworld-win32-x64',
+  outputDirectory: '../release/installer',
   authors: 'Me',
   exe: 'helloworld.exe',
   description: 'helloworld'

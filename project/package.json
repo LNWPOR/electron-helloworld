@@ -1,13 +1,13 @@
 {
   "name": "helloworld",
-  "version": "0.0.2",
+  "version": "0.0.6",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "run-server": "http-server release/installer -p 8060",
-    "pack:win": "electron-packager . helloworld --platform=win32 --arch=x64 --out=release/package --overwrite",
+    "run-server": "http-server ../release/installer -p 8060",
+    "pack:win": "electron-packager . helloworld --platform=win32 --arch=x64 --out=../release/package --overwrite",
     "build:winstaller": "node ./build.js",
-    "zip:win": "bestzip release/installer/helloworld-win.zip ./release/installer/Setup.exe",
+    "zip:win": "bestzip release/installer/helloworld-win.zip ../release/installer/Setup.exe",
     "build:win": "npm run pack:win && npm run build:winstaller"
   },
   "devDependencies": {
