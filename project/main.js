@@ -134,6 +134,13 @@ autoUpdater.addListener(
   }
 );
 
+autoUpdater.addListener('update-available', (event, info) => {
+  sendStatusToWindow(`update-available`);
+  dialog.showMessageBox({
+    message: `update-available`
+  });
+});
+
 // Display an error message on update error
 autoUpdater.addListener('error', error => {
   sendStatusToWindow('Auto updater error: ' + error);
